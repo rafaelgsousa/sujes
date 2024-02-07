@@ -58,24 +58,57 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+    
+class Employee(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
+    full_name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+    address = models.CharField(max_length=255)
+    cpf = models.CharField(max_length=12)
+    date_of_birth = models.DateTimeField()
+    role = models.ManyToManyField(Role)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+
+
+class Student(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
+    full_name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+    address = models.CharField(max_length=255)
+    date_of_birth = models.DateTimeField()
+    father_fullname = models.CharField(max_length=100)
+    father_phone = models.CharField(max_length=20, unique=True, blank=True)
+    mother_fullname = models.CharField(max_length=100)
+    mother_phone = models.CharField(max_length=20, unique=True, blank=True)
+    age = models.IntegerField()
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+
+    
+
+class Role(models.Model):
+    name = models.CharField(max_length=50)
 
 class VerificationCode(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     code = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
     code_verificated = models.BooleanField(default=False)
-class Device(models.Model):
-    name = models.CharField(max_length=100)
-    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
 
-class Logger(models.Model):
-    endpoint = models.CharField(max_length=255)
-    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
-    method = models.CharField(max_length=10)
-    body= models.CharField(max_length=255, null=True, blank=True)
-    view = models.CharField(max_length=255)
-    status = models.IntegerField()
-    invocation_time = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"{self.endpoint} - {self.user} - {self.method} - {self.status}"
+# class Device(models.Model):
+#     name = models.CharField(max_length=100)
+#     user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+
+# class Logger(models.Model):
+#     endpoint = models.CharField(max_length=255)
+#     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
+#     method = models.CharField(max_length=10)
+#     body= models.CharField(max_length=255, null=True, blank=True)
+#     view = models.CharField(max_length=255)
+#     status = models.IntegerField()
+#     invocation_time = models.DateTimeField(auto_now_add=True)
+
+#     def __str__(self):
+#         return f"{self.endpoint} - {self.user} - {self.method} - {self.status}"
