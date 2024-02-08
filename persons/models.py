@@ -58,12 +58,17 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+
+class Phone(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
+    name = models.CharField(max_length=100)
+    title = models.CharField(max_length=10)
+    number = models.CharField(max_length=20) # se é pai, mãe, tio, avó, atc ...
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     
 class Employee(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
     full_name = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
-    update_at = models.DateTimeField(auto_now=True)
     address = models.CharField(max_length=255)
     cpf = models.CharField(max_length=12)
     date_of_birth = models.DateTimeField()
@@ -74,16 +79,12 @@ class Employee(models.Model):
 class Student(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
     full_name = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
-    update_at = models.DateTimeField(auto_now=True)
-    address = models.CharField(max_length=255)
     date_of_birth = models.DateTimeField()
-    father_fullname = models.CharField(max_length=100)
-    father_phone = models.CharField(max_length=20, unique=True, blank=True)
-    mother_fullname = models.CharField(max_length=100)
-    mother_phone = models.CharField(max_length=20, unique=True, blank=True)
     age = models.IntegerField()
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    address = models.CharField(max_length=255)
+    rented = models.IntegerField()
+    user_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    school_class_id = models.ForeignKey(School_class)
 
     
 
