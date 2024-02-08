@@ -22,11 +22,11 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(email, password, **extra_fields)
 
-class CustomGroup(Group):
-    user_set = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='custom_groups')
+# class CustomGroup(Group):
+#     user_set = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='custom_groups')
 
-class CustomPermission(Permission):
-    user_set = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='custom_permissions')
+# class CustomPermission(Permission):
+#     user_set = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='custom_permissions')
     
 
 class CustomUser(AbstractUser):
@@ -39,9 +39,7 @@ class CustomUser(AbstractUser):
     
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
     email = models.EmailField(max_length=50, unique=True)
-    phone = models.CharField(max_length=20, unique=True, blank=True)
     picture = models.ImageField(upload_to='pictures/%Y/%m/%d', blank=True)
-    password = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
     is_logged = models.BooleanField(default=False)
     login_erro = models.IntegerField(choices=LoginError.choices, default=LoginError.ZERO)
@@ -53,43 +51,22 @@ class CustomUser(AbstractUser):
 
     objects = CustomUserManager()
 
-    class Meta:
-        swappable = 'AUTH_USER_MODEL'
+    # class Meta:
+    #     swappable = 'AUTH_USER_MODEL'
 
     def __str__(self):
         return self.email
 
 class Phone(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100) # se é pai, mãe, tio, avó, atc ...
     title = models.CharField(max_length=10)
-    number = models.CharField(max_length=20) # se é pai, mãe, tio, avó, atc ...
+    number = models.CharField(max_length=20) 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    
-class Employee(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
-    full_name = models.CharField(max_length=100)
-    address = models.CharField(max_length=255)
-    cpf = models.CharField(max_length=12)
-    date_of_birth = models.DateTimeField()
-    role = models.ManyToManyField(Role)
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-
-
-class Student(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
-    full_name = models.CharField(max_length=100)
-    date_of_birth = models.DateTimeField()
-    age = models.IntegerField()
-    address = models.CharField(max_length=255)
-    rented = models.IntegerField()
-    user_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    school_class_id = models.ForeignKey(School_class)
-
-    
 
 class Role(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)   
+  
 
 class VerificationCode(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
