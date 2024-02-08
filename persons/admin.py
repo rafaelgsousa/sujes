@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from persons.models import *
+
+
+@admin.register(CustomUser)
+@admin.register(Phone)
+@admin.register(Role)
+class UserAdmin(admin.ModelAdmin):
+    ...

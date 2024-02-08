@@ -1,10 +1,7 @@
 from uuid import uuid4
 
-from django.contrib.auth.models import (AbstractUser, BaseUserManager, Group,
-                                        Permission)
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
-
-from project import settings
 
 
 class CustomUserManager(BaseUserManager):
@@ -21,12 +18,6 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(email, password, **extra_fields)
-
-# class CustomGroup(Group):
-#     user_set = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='custom_groups')
-
-# class CustomPermission(Permission):
-#     user_set = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='custom_permissions')
     
 
 class CustomUser(AbstractUser):
@@ -51,9 +42,6 @@ class CustomUser(AbstractUser):
 
     objects = CustomUserManager()
 
-    # class Meta:
-    #     swappable = 'AUTH_USER_MODEL'
-
     def __str__(self):
         return self.email
 
@@ -64,8 +52,14 @@ class Phone(models.Model):
     number = models.CharField(max_length=20) 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.name} - {self.number}'
+
 class Role(models.Model):
-    name = models.CharField(max_length=50)   
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name  
   
 
 class VerificationCode(models.Model):
@@ -73,6 +67,9 @@ class VerificationCode(models.Model):
     code = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
     code_verificated = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.user
 
 
 # class Device(models.Model):
