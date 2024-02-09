@@ -1,5 +1,6 @@
 from uuid import uuid4
 
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 
@@ -10,8 +11,9 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('The email field is mandatory')
         email = self.normalize_email(email)     
         user = self.model(email=email, **extra_fields)
-        user.set_password(password)
-        user.save()
+        if password:
+            user.set_password(password)
+        user.save(using=self._db)
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
@@ -41,6 +43,18 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
+
+    def save(self, *args, **kwargs):
+        if self.pk is not None:
+            original = CustomUser.objects.get(pk=self.pk)
+            if self.password == original.password:
+                pass
+            else:
+                self.password = make_password(self.password)
+        else:
+            self.password = make_password(self.password)
+        
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.email
