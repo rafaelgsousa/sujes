@@ -1,5 +1,7 @@
+from datetime import datetime
 from uuid import uuid4
 
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from persons.models import CustomUser, Role
@@ -84,6 +86,15 @@ class PresenceInClass(models.Model):
         return f'{self.student.fullname} - aula de {self.classroom.start_class} a {self.classroom.end_class}'
 
 class TestScore(models.Model):
+    class TypeTestScore(models.IntegerChoices):
+        MONTHLY = 0, 'Monthly'
+        BIMONTHLY = 1, 'bimonthly'
+        BIMMONTHLY_RECOVERY = 2, 'bimonthly recovery'
+        SEMI_ANNUAL_RECOVERY = 3, 'semi-annual recovery'
+    grade = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)], default=5)
+    month = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(12)], default=datetime.now().month)
+    year = models.IntegerField(default=datetime.now().year)
+    type = models.CharField(choices=TypeTestScore.choices, default=TypeTestScore.MONTHLY)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     school_subject = models.ForeignKey(SchoolSubjects, on_delete=models.CASCADE)
 

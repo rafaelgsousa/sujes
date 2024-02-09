@@ -1,3 +1,3 @@
-from .employee import *
-from .school import *
-from .student import *
+from .employee_serializer import *
+from .school_serializer import *
+from .student_serializer import *

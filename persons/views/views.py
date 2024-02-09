@@ -1,6 +1,16 @@
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
+from utils import ListPagination
+
+from ..serializers import *
 
 
-# Create your views here.
 class CustomUserView(ModelViewSet):
-    pass
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = CustomUserSerializer
+    pagination_class = ListPagination
+    http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']

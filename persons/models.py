@@ -34,7 +34,6 @@ class CustomUser(AbstractUser):
     email = models.EmailField(max_length=50, unique=True)
     picture = models.ImageField(upload_to='pictures/%Y/%m/%d', blank=True)
     is_active = models.BooleanField(default=True)
-    is_logged = models.BooleanField(default=False)
     login_erro = models.IntegerField(choices=LoginError.choices, default=LoginError.ZERO)
     update_at = models.DateTimeField(auto_now=True)
 
@@ -46,8 +45,8 @@ class CustomUser(AbstractUser):
 
     def save(self, *args, **kwargs):
         if self.pk is not None:
-            original = CustomUser.objects.get(pk=self.pk)
-            if self.password == original.password:
+            original = CustomUser.objects.filter(pk=self.pk).first()
+            if original is not None and self.password == original.password:
                 pass
             else:
                 self.password = make_password(self.password)
