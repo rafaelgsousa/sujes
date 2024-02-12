@@ -1,8 +1,9 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from uuid import uuid4
 
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.utils import timezone
 
 from persons.models import CustomUser, Role
 
@@ -45,7 +46,6 @@ class Student(models.Model):
     date_of_birth = models.DateTimeField()
     age = models.IntegerField()
     address = models.CharField(max_length=255)
-    rented = models.IntegerField()
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     school_class = models.ForeignKey(SchoolClass, on_delete=models.CASCADE)
 
@@ -100,3 +100,17 @@ class TestScore(models.Model):
 
     def __str__(self):
         return f'{self.student.user.first_name} - {self.school_subject.name}'
+
+class Book(models.Model):
+    name = models.CharField(max_length=100)
+    codigo = models.CharField(max_length=50)
+    status = models.BooleanField(default=True)
+    entry_date = models.DateTimeField(auto_now_add=True)
+    
+class Rented(models.Model):
+    renta_date = models.DateTimeField(auto_now_add=True)
+    expected_return = models.DateTimeField(default=timezone.now() + timedelta(days=7))
+    return_date = models.DateTimeField()
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)

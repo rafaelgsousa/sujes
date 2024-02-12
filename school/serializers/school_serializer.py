@@ -6,45 +6,55 @@ from ..models import *
 class SchoolSerializer(serializers.ModelSerializer):
     class Meta:
         model = School
-        fields = ['name', 'address']
+        fields = '__all__'
 
 
 class SchoolSerieSerializer(serializers.ModelSerializer):
     class Meta:
         model = SchoolSerie
-        fields = ['serie']
+        fields = '__all__'
 
 
 class SchoolClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = SchoolClass
-        fields = ['name', 'year', 'school_serie']
+        fields = '__all__'
 
 
 class SchoolroomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schoolroom
-        fields = ['name', 'school', 'school_class']
+        fields = '__all__'
 
 
 class SchoolSubjectsSerializer(serializers.ModelSerializer):
     class Meta:
         model = SchoolSubjects
-        fields = ['name', 'employee', 'school_class']
+        fields = '__all__'
 
 
 class ClassroomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Classroom
-        fields= ['start_class', 'end_class', 'school_subject']
+        fields= '__all__'
 
 
 class PresenceInClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = PresenceInClass
-        fields = ['present', 'student', 'class_room']
+        fields = '__all__'
 
 class TestScoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestScore
-        fields = ['grade', 'month', 'year', 'type', 'student', 'school_subject']
+        fields = '__all__'
+
+class BookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = '__all__'
+
+class RentedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rented
+        fields = '__all__'

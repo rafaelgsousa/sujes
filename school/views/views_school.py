@@ -62,3 +62,17 @@ class TestScoreView(ModelViewSet):
     pagination_class = ListPagination
     serializer_class = TestScoreSerializer
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
+
+class BookView(ModelViewSet):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    pagination_class = ListPagination
+    serializer_class = BookSerializer
+    http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
+
+class RentedView(ModelViewSet):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    pagination_class = ListPagination
+    serializer_class = RentedSerializer
+    http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
