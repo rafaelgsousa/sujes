@@ -9,7 +9,7 @@ from school.models import *
 @admin.register(Employee)
 @admin.register(Student)
 @admin.register(Schoolroom)
-@admin.register(SchoolSubjects)
+@admin.register(SchoolSubject)
 @admin.register(Classroom)
 @admin.register(PresenceInClass)
 @admin.register(TestScore)

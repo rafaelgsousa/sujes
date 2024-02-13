@@ -2,6 +2,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
+from permissions import *
 from utils import ListPagination
 
 from ..serializers import *
@@ -9,10 +10,11 @@ from ..serializers import *
 
 class SchoolView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, CheckPermissions]
     serializer_class = SchoolSerializer
     pagination_class = ListPagination
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
+    queryset = School.objects.filter()
 
 class SchoolSerieView(ModelViewSet):
     authentication_classes = [JWTAuthentication]

@@ -22,10 +22,17 @@ class CustomUserView(ModelViewSet):
     pagination_class = ListPagination
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
 
+    def get_permissions(self):
+        print(f'Action = {self.action}')
+        if self.action in ['login','logout','create']:
+            return []
+        else:
+            return self.permission_classes
+
     @action(detail=False, methods=['post'], url_path='login')
     def login(self, request):
         email = request.data.get('email')
-
+        print(email)
         password = request.data.get('password')
 
         user = get_object_or_404(CustomUser,email=email)
@@ -41,8 +48,6 @@ class CustomUserView(ModelViewSet):
         if check_password(password, user.password):
 
             token = RefreshToken.for_user(user)
-            user.is_logged_in = True
-            user.save(update_fields=list(['is_logged_in']))
 
             if user.login_erro > 0:
                 user.login_erro = CustomUser.LoginError.ZERO
@@ -75,11 +80,6 @@ class CustomUserView(ModelViewSet):
     @action(detail=False, methods=['post'], url_path='logout')
     def logout(self, request, *args, **kwargs):
         user = get_object_or_404(CustomUser, pk=request.user.id)
-
-        user.is_logged_in= False
-        user.last_login_sistem= timezone.now()
-            
-        user.save(update_fields=list(['is_logged_in', 'last_login_sistem']))
 
         return Response(
             {

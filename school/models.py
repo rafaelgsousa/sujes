@@ -60,7 +60,7 @@ class Schoolroom(models.Model):
     def __str__(self):
         return f'{self.school.name} sala - {self.name}'
 
-class SchoolSubjects(models.Model):
+class SchoolSubject(models.Model):
     name = models.CharField(max_length=20)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     school_class = models.ForeignKey(SchoolClass, on_delete=models.CASCADE)
@@ -72,7 +72,7 @@ class SchoolSubjects(models.Model):
 class Classroom(models.Model):
     start_class = models.DateTimeField()
     end_class = models.DateTimeField()
-    school_subject = models.ForeignKey(SchoolSubjects, on_delete=models.CASCADE)
+    school_subject = models.ForeignKey(SchoolSubject, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.school_subject.name} de {self.start_class} à {self.end_class}'
@@ -96,7 +96,7 @@ class TestScore(models.Model):
     year = models.IntegerField(default=datetime.now().year)
     type = models.CharField(choices=TypeTestScore.choices, default=TypeTestScore.MONTHLY)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    school_subject = models.ForeignKey(SchoolSubjects, on_delete=models.CASCADE)
+    school_subject = models.ForeignKey(SchoolSubject, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.student.user.first_name} - {self.school_subject.name}'
@@ -106,6 +106,7 @@ class Book(models.Model):
     codigo = models.CharField(max_length=50)
     status = models.BooleanField(default=True)
     entry_date = models.DateTimeField(auto_now_add=True)
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
     
 class Rented(models.Model):
     renta_date = models.DateTimeField(auto_now_add=True)

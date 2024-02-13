@@ -7,12 +7,12 @@ from django.db import models
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
+        print('Passou aqui')
         if not email:
             raise ValueError('The email field is mandatory')
         email = self.normalize_email(email)     
         user = self.model(email=email, **extra_fields)
-        if password:
-            user.set_password(password)
+        user.password = make_password(password)
         user.save(using=self._db)
         return user
 
@@ -44,16 +44,13 @@ class CustomUser(AbstractUser):
     objects = CustomUserManager()
 
     def save(self, *args, **kwargs):
-        if self.pk is not None:
-            original = CustomUser.objects.filter(pk=self.pk).first()
-            if original is not None and self.password == original.password:
-                pass
-            else:
-                self.password = make_password(self.password)
-        else:
+        user = CustomUser.objects.filter(pk=self.pk).first()
+        if not user:
+            self.username = self.email
             self.password = make_password(self.password)
-        
-        super().save(*args, **kwargs)
+        if user and not (user.password != self.password): # "To prevent the super admin from changing the password"
+            self.password = user.password
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.email

@@ -36,15 +36,15 @@ view_test_score = SimpleRouter()
 view_test_score.register('', TestScoreView, basename='test-score-ruter')
 
 urlpatterns = [
-    path('employee', include(views_employee.urls)),
-    path('student', include(views_student.urls)),
-    path('school', include(views_school.urls)),
-    path('school-serie', include(view_school_serie.urls)),
-    path('school-class', include(view_school_class.urls)),
-    path('school-room', include(view_class_room.urls)),
-    path('school-subject', include(view_school_subjects.urls)),
-    path('class-room', include(view_class_room.urls)),
-    path('presence-in-class', include(view_presence_in_class.urls)),
-    path('test-score', include(view_test_score.urls)),
+    path('employee/', include(views_employee.urls)),
+    path('student/', include(views_student.urls)),
+    path('school/', include(views_school.urls)),
+    path('school-serie/', include(view_school_serie.urls)),
+    path('school-class/', include(view_school_class.urls)),
+    path('school-room/', include(view_class_room.urls)),
+    path('school-subject/', include(view_school_subjects.urls)),
+    path('class-room/', include(view_class_room.urls)),
+    path('presence-in-class/', include(view_presence_in_class.urls)),
+    path('test-score/', include(view_test_score.urls)),
 
 ]

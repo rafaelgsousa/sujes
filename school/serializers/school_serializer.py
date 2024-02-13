@@ -29,7 +29,7 @@ class SchoolroomSerializer(serializers.ModelSerializer):
 
 class SchoolSubjectsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = SchoolSubjects
+        model = SchoolSubject
         fields = '__all__'
 
 
