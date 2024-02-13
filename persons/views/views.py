@@ -1,6 +1,5 @@
 from django.contrib.auth.hashers import check_password
 from django.shortcuts import get_object_or_404
-from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
@@ -10,6 +9,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from permissions import *
 from utils import ListPagination
 
 from ..serializers import *
@@ -17,22 +17,21 @@ from ..serializers import *
 
 class CustomUserView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated , CheckPermissions]
     serializer_class = CustomUserSerializer
     pagination_class = ListPagination
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
+    queryset = CustomUser.objects.all()
 
     def get_permissions(self):
-        print(f'Action = {self.action}')
-        if self.action in ['login','logout','create']:
+        if self.action in ['login','logout',]:
             return []
         else:
-            return self.permission_classes
+            return [permission() for permission in self.permission_classes]
 
     @action(detail=False, methods=['post'], url_path='login')
     def login(self, request):
         email = request.data.get('email')
-        print(email)
         password = request.data.get('password')
 
         user = get_object_or_404(CustomUser,email=email)
