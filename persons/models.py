@@ -46,6 +46,8 @@ class CustomUser(AbstractUser):
     def save(self, *args, **kwargs):
         user = CustomUser.objects.filter(pk=self.pk).first()
         if not user:
+            print('Passou aqui')
+            print(f'Self.password = {self.password}')
             self.username = self.email
             self.password = make_password(self.password)
         if user and not (user.password != self.password): # "To prevent the super admin from changing the password"

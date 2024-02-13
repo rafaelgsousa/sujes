@@ -26,7 +26,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
                 many_to_many[field_name] = validated_data.pop(field_name)
 
         try:
-            validated_data['password'] = make_password(validated_data['password'])
             validated_data['username'] = validated_data['email']
             instance = ModelClass._default_manager.create(**validated_data)
         except TypeError:
