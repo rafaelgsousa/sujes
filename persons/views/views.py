@@ -87,7 +87,7 @@ class CustomUserView(ModelViewSet):
             },
             status=status.HTTP_200_OK
         )
-    
+
 class RoleView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated , CheckPermissions]
