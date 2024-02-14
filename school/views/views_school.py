@@ -20,7 +20,7 @@ class SchoolSerieView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated , CheckPermissions]
     pagination_class = ListPagination
-    serializer_class = SchoolSerializer
+    serializer_class = SchoolSerieSerializer
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
     queryset = SchoolSerie.objects.all()
 

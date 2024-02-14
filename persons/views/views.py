@@ -87,3 +87,20 @@ class CustomUserView(ModelViewSet):
             },
             status=status.HTTP_200_OK
         )
+    
+class RoleView(ModelViewSet):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated , CheckPermissions]
+    serializer_class = RoleSerializer
+    pagination_class = ListPagination
+    http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
+    queryset = CustomUser.objects.all()
+
+
+class PhoneView(ModelViewSet):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated , CheckPermissions]
+    serializer_class = PhoneSerializer
+    pagination_class = ListPagination
+    http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
+    queryset = CustomUser.objects.all()

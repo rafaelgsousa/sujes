@@ -10,10 +10,11 @@ from .models import *
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'first_name', 'last_name', 'email', 'password', 'picture','login_erro', 'is_active']
+        fields = ['id', 'first_name', 'last_name', 'email', 'password', 'picture', 'login_erro', 'is_active']
 
     password = serializers.CharField(write_only=True, required=True)
     id = serializers.UUIDField(read_only=True)
+    login_erro = serializers.IntegerField(read_only=True)
 
     def create(self, validated_data):
         serializers.raise_errors_on_nested_writes('create', self, validated_data)
@@ -56,7 +57,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
         return instance
 
     def update(self, instance, validated_data):
-        print('passou aqui')
         serializers.raise_errors_on_nested_writes('update', self, validated_data)
         info = model_meta.get_field_info(instance)
 
@@ -67,7 +67,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
             else:
                 setattr(instance, attr, value)
 
-        if validated_data['password']:
+        if hasattr(validated_data, "password"):
             instance.password = make_password(validated_data['password'])
 
         instance.save()
@@ -77,3 +77,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
             field.set(value)
 
         return instance
+    
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = ['id', 'name']
+
+class PhoneSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Phone
+        fields = ['id', 'name', 'title', 'number', 'user']

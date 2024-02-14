@@ -13,5 +13,7 @@ from school.models import *
 @admin.register(Classroom)
 @admin.register(PresenceInClass)
 @admin.register(TestScore)
+@admin.register(Book)
+@admin.register(Rented)
 class UserAdmin(admin.ModelAdmin):
     ...

@@ -16,7 +16,8 @@ class School(models.Model):
         return self.name
 
 class SchoolSerie(models.Model):
-    serie = models.CharField(max_length=10)
+    ano = models.CharField(max_length=10)
+    grau = models.CharField(max_length=25)
 
     def __str__(self):
         return self.serie
@@ -50,7 +51,7 @@ class Student(models.Model):
     school_class = models.ForeignKey(SchoolClass, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.user.first_name} - matriculado no(a) {self.school_class.name}'
+        return f'{self.user.first_name} - matriculado no(a) {self.school_class.school_serie.ano} - {self.school_class.name}'
 
 class Schoolroom(models.Model):
     name = models.CharField(max_length=10)
@@ -107,6 +108,9 @@ class Book(models.Model):
     status = models.BooleanField(default=True)
     entry_date = models.DateTimeField(auto_now_add=True)
     school = models.ForeignKey(School, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.book} - {self.codigo}'
     
 class Rented(models.Model):
     renta_date = models.DateTimeField(auto_now_add=True)
@@ -115,3 +119,6 @@ class Rented(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.book} - {self.student} - renta_date = {self.renta_date} expexted_return = {self.expected_return}'

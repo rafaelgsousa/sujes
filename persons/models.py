@@ -46,8 +46,6 @@ class CustomUser(AbstractUser):
     def save(self, *args, **kwargs):
         user = CustomUser.objects.filter(pk=self.pk).first()
         if not user:
-            print('Passou aqui')
-            print(f'Self.password = {self.password}')
             self.username = self.email
             self.password = make_password(self.password)
         if user and not (user.password != self.password): # "To prevent the super admin from changing the password"
@@ -55,7 +53,7 @@ class CustomUser(AbstractUser):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.email
+        return f'email: {self.email} - id: {self.id}'
 
 class Phone(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
@@ -88,14 +86,14 @@ class VerificationCode(models.Model):
 #     name = models.CharField(max_length=100)
 #     user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
 
-# class Logger(models.Model):
-#     endpoint = models.CharField(max_length=255)
-#     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
-#     method = models.CharField(max_length=10)
-#     body= models.CharField(max_length=255, null=True, blank=True)
-#     view = models.CharField(max_length=255)
-#     status = models.IntegerField()
-#     invocation_time = models.DateTimeField(auto_now_add=True)
+class Logger(models.Model):
+    endpoint = models.CharField(max_length=255)
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
+    method = models.CharField(max_length=10)
+    body= models.CharField(max_length=255, null=True, blank=True)
+    view = models.CharField(max_length=255)
+    status = models.IntegerField()
+    invocation_time = models.DateTimeField(auto_now_add=True)
 
-#     def __str__(self):
-#         return f"{self.endpoint} - {self.user} - {self.method} - {self.status}"
+    def __str__(self):
+        return f"{self.endpoint} - {self.user} - {self.method} - {self.status}"
