@@ -81,9 +81,14 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Role
-        fields = ['id', 'name']
+        fields = '__all__'
 
 class PhoneSerializer(serializers.ModelSerializer):
     class Meta:
         model = Phone
-        fields = ['id', 'name', 'title', 'number', 'user']
+        fields = '__all__'
+
+class LoggerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Logger
+        fields = '__all__'
