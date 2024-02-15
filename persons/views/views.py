@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -17,7 +17,7 @@ from ..serializers import *
 
 class CustomUserView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated , CheckPermissions]
+    permission_classes = [IsAuthenticated , DjangoModelPermissions]
     serializer_class = CustomUserSerializer
     pagination_class = ListPagination
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
@@ -90,7 +90,7 @@ class CustomUserView(ModelViewSet):
 
 class RoleView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated , CheckPermissions]
+    permission_classes = [IsAuthenticated , DjangoModelPermissions]
     serializer_class = RoleSerializer
     pagination_class = ListPagination
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
@@ -99,7 +99,7 @@ class RoleView(ModelViewSet):
 
 class PhoneView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated , CheckPermissions]
+    permission_classes = [IsAuthenticated , DjangoModelPermissions]
     serializer_class = PhoneSerializer
     pagination_class = ListPagination
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']

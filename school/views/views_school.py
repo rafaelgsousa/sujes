@@ -1,4 +1,4 @@
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
@@ -10,7 +10,7 @@ from ..serializers import *
 
 class SchoolView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated , CheckPermissions]
+    permission_classes = [IsAuthenticated , DjangoModelPermissions]
     serializer_class = SchoolSerializer
     pagination_class = ListPagination
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
@@ -18,7 +18,7 @@ class SchoolView(ModelViewSet):
 
 class SchoolSerieView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated , CheckPermissions]
+    permission_classes = [IsAuthenticated , DjangoModelPermissions]
     pagination_class = ListPagination
     serializer_class = SchoolSerieSerializer
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
@@ -26,7 +26,7 @@ class SchoolSerieView(ModelViewSet):
 
 class SchoolClassView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated , CheckPermissions]
+    permission_classes = [IsAuthenticated , DjangoModelPermissions]
     pagination_class = ListPagination
     serializer_class = SchoolClassSerializer
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
@@ -34,7 +34,7 @@ class SchoolClassView(ModelViewSet):
 
 class SchoolroomView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated , CheckPermissions]
+    permission_classes = [IsAuthenticated , DjangoModelPermissions]
     pagination_class = ListPagination
     serializer_class = SchoolroomSerializer
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
@@ -42,7 +42,7 @@ class SchoolroomView(ModelViewSet):
 
 class SchoolSubjectsView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated , CheckPermissions]
+    permission_classes = [IsAuthenticated , DjangoModelPermissions]
     pagination_class = ListPagination
     serializer_class = SchoolSubjectsSerializer
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
@@ -50,7 +50,7 @@ class SchoolSubjectsView(ModelViewSet):
 
 class ClassroomView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated , CheckPermissions]
+    permission_classes = [IsAuthenticated , DjangoModelPermissions]
     pagination_class = ListPagination
     serializer_class = ClassroomSerializer
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
@@ -58,7 +58,7 @@ class ClassroomView(ModelViewSet):
 
 class PresenceInClassView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated , CheckPermissions]
+    permission_classes = [IsAuthenticated , DjangoModelPermissions]
     pagination_class = ListPagination
     serializer_class = PresenceInClassSerializer
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
@@ -66,7 +66,7 @@ class PresenceInClassView(ModelViewSet):
 
 class TestScoreView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated , CheckPermissions]
+    permission_classes = [IsAuthenticated , DjangoModelPermissions]
     pagination_class = ListPagination
     serializer_class = TestScoreSerializer
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
@@ -74,7 +74,7 @@ class TestScoreView(ModelViewSet):
 
 class BookView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated , CheckPermissions]
+    permission_classes = [IsAuthenticated , DjangoModelPermissions]
     pagination_class = ListPagination
     serializer_class = BookSerializer
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
@@ -82,7 +82,7 @@ class BookView(ModelViewSet):
 
 class RentedView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated , CheckPermissions]
+    permission_classes = [IsAuthenticated , DjangoModelPermissions]
     pagination_class = ListPagination
     serializer_class = RentedSerializer
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
