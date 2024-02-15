@@ -99,8 +99,8 @@ class RoleView(ModelViewSet):
 
 class PhoneView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated , CheckPermissions]
+    permission_classes = [IsAuthenticated , ReadOnly]
     serializer_class = PhoneSerializer
     pagination_class = ListPagination
-    http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
+    http_method_names = ['get', 'options', 'head']
     queryset = CustomUser.objects.all()

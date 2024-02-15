@@ -7,7 +7,7 @@ from django.urls import resolve
 from rest_framework.response import Response
 
 from persons.models import CustomUser, Logger
-from utils import get_value_for_key
+from utils import change_to_dict_del_some_fields, get_value_for_key
 
 logger = logging.getLogger(__name__)
 
@@ -61,6 +61,7 @@ class RequestLoggerMiddleware:
 
         if isinstance(request_body, bytes) and 'admin' in path:
                 body = request_body.decode('utf-8')
+                body = change_to_dict_del_some_fields(body) if body else body
 
         elif method == 'POST' and 'logout' in path:
             body = None            

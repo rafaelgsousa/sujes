@@ -1,8 +1,10 @@
 from uuid import uuid4
 
+from asgiref.sync import sync_to_async
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.db import models
+from django.db import models, router
+from rest_framework.exceptions import PermissionDenied
 
 
 class CustomUserManager(BaseUserManager):
@@ -95,5 +97,29 @@ class Logger(models.Model):
     status = models.IntegerField()
     invocation_time = models.DateTimeField(auto_now_add=True)
 
+    def save(self, force_insert=True, force_update=False, using=None, update_fields=None):
+        """
+        Override do método save para permitir apenas criações de novos registros.
+        """
+        if self.pk is not None:
+            raise PermissionDenied("Updating existing records is not permitted.")
+
+        return super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
+
+    def delete(self, using=None, keep_parents=False):
+        raise PermissionDenied(detail='error: Deleting is not allowed.')
+
+    delete.alters_data = False
+
+    async def adelete(self, using=None, keep_parents=False):
+        raise PermissionDenied(detail='error: Deleting is not allowed.')
+
+    adelete.alters_data = False
+
     def __str__(self):
         return f"{self.endpoint} - {self.user} - {self.method} - {self.status}"
+    
+    class Meta:
+        permissions = [
+            ("persons.view_logger", "Can view Logger"),
+        ]
