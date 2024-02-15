@@ -31,4 +31,4 @@ class CheckPermissions(BasePermission):
         model_lower = view.queryset.model.__name__.lower()
         group_permissions = request.user.get_group_permissions()
         permission_to_check = f'{app_name}.{name_method}_{model_lower}'
-        return True if permission_to_check in group_permissions else False
+        return permission_to_check in group_permissions
