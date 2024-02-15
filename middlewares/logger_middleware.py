@@ -38,6 +38,8 @@ class RequestLoggerMiddleware:
         email = ''
         body = None
         view_name = ''
+        method = request.method
+        path = request.path
 
         user_id = request.user.id if request.user else None
         
@@ -57,11 +59,15 @@ class RequestLoggerMiddleware:
         if hasattr(request, 'resolver_match') and request.resolver_match:
             view_name = request.resolver_match.url_name
 
-        if request.method == 'POST' and 'logout' in request.path:
-            body = None
-        else:
-            if request_body:
+        if isinstance(request_body, bytes) and 'admin' in path:
+                body = request_body.decode('utf-8')
+
+        elif method == 'POST' and 'logout' in path:
+            body = None            
+            
+        elif request_body:
                 body = json.loads(request_body.decode('utf-8'))
+        
 
         return user_id, email, body, view_name
 
@@ -76,7 +82,7 @@ class RequestLoggerMiddleware:
                 user = CustomUser.objects.filter(email=email).first()
 
             if user:
-                if body and 'password' in body:
+                if body and not isinstance(body, str) and 'password' in body:
                     del body['password']
 
                 Logger.objects.create(

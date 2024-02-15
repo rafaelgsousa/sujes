@@ -28,7 +28,7 @@ class SchoolClass(models.Model):
     school_serie = models.ForeignKey(SchoolSerie, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.school_serie.serie} - {self.name}'
+        return f'{self.school_serie.ano} - {self.name}'
 
 class Employee(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
