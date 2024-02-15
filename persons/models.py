@@ -117,9 +117,10 @@ class Logger(models.Model):
     adelete.alters_data = False
 
     def __str__(self):
-        return f"{self.endpoint} - {self.user} - {self.method} - {self.status}"
+        return f"{self.pk} - {self.endpoint} - {self.user} - {self.method} - {self.status}"
     
     class Meta:
         permissions = [
             ("persons.view_logger", "Can view Logger"),
         ]
+        
