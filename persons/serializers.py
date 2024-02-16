@@ -1,6 +1,7 @@
 import traceback
 
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import Group, Permission
 from rest_framework import serializers
 from rest_framework.utils import model_meta
 
@@ -77,11 +78,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
             field.set(value)
 
         return instance
-    
-class RoleSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Role
-        fields = '__all__'
 
 class PhoneSerializer(serializers.ModelSerializer):
     class Meta:
@@ -91,4 +87,15 @@ class PhoneSerializer(serializers.ModelSerializer):
 class LoggerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Logger
+        fields = '__all__'
+
+class PermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permission
+        fields = '__all__'
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
         fields = '__all__'

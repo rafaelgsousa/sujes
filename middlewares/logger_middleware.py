@@ -44,48 +44,32 @@ class RequestLoggerMiddleware:
         user_id = request.user.id if request.user else None
         
         if not user_id and isinstance(response, Response):
-            print('1')
             user_id = get_value_for_key(response.data, 'id')
             email = get_value_for_key(response.data, 'email') if not user_id else None
-            print('1 - 2')
 
         if not user_id and not email and isinstance(response, Response):
-            print('2')
             user_id = get_value_for_key(request.resolver_match.kwargs, 'pk')
             email = get_value_for_key(request.resolver_match.kwargs, 'email')
             email = get_value_for_key(json.loads(request_body.decode('utf-8')), 'email') if not email and len(request_body.decode('utf-8')) else email
-            print('2 - 2')
 
         if not user_id and not email and isinstance(response, JsonResponse):
-            print('3')
             user_id = get_value_for_key(resolve(request.path).kwargs,'pk')
             email = get_value_for_key(resolve(request.path).kwargs,'email') if not user_id else None
-            print('3 - 2')
 
 
         if hasattr(request, 'resolver_match') and request.resolver_match:
-            print('4')
             view_name = request.resolver_match.url_name
-            print('4 - 2')
 
 
         if isinstance(request_body, bytes) and 'admin' in path:
-                print('5')
-                body = request_body.decode('utf-8')
-                print(f'body = {body}')
-                body = change_to_dict_del_some_fields(body) if body else body
-                print('5 - 2')
+                body = change_to_dict_del_some_fields(body) if len(str(body)) else body
 
 
         elif method == 'POST' and 'logout' in path:
-            print('6')
             body = None    
-            print('6 - 2')        
             
         elif request_body:
-                print('7')
                 body = json.loads(request_body.decode('utf-8'))
-                print('7 - 2') 
         
 
         return user_id, email, body, view_name

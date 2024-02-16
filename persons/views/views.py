@@ -1,4 +1,5 @@
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth.models import Group, Permission
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import action
@@ -24,7 +25,7 @@ class CustomUserView(ModelViewSet):
     queryset = CustomUser.objects.all()
 
     def get_permissions(self):
-        if self.action in ['login','logout',]:
+        if self.action in ['login']:
             return []
         else:
             return [permission() for permission in self.permission_classes]
@@ -87,14 +88,33 @@ class CustomUserView(ModelViewSet):
             },
             status=status.HTTP_200_OK
         )
+    
 
-class RoleView(ModelViewSet):
+
+class GroupView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated , DjangoModelPermissions]
-    serializer_class = RoleSerializer
+    serializer_class = GroupSerializer
     pagination_class = ListPagination
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
-    queryset = CustomUser.objects.all()
+    queryset = Group.objects.all()
+
+    def get_permissions(self):
+        if self.action in ['listpermissions']:
+            return []
+        else:
+            return [permission() for permission in self.permission_classes]
+
+    @action(detail=False, methods=['get'], url_path='listpermissions')
+    def listpermissions(self, request, *args, **kwargs):
+        permissions = Permission.objects.all()
+        serializer = PermissionSerializer(permissions, many=True)
+        return Response(
+            {
+                'permissions': serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
 
 
 class PhoneView(ModelViewSet):
@@ -103,7 +123,7 @@ class PhoneView(ModelViewSet):
     serializer_class = PhoneSerializer
     pagination_class = ListPagination
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
-    queryset = CustomUser.objects.all()
+    queryset = Phone.objects.all()
 
 class LoggerView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
@@ -111,4 +131,4 @@ class LoggerView(ModelViewSet):
     serializer_class = LoggerSerializer
     pagination_class = ListPagination
     http_method_names = ['get', 'options', 'head']
-    queryset = CustomUser.objects.all()
+    queryset = Logger.objects.all()

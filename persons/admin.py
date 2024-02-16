@@ -5,7 +5,6 @@ from persons.models import *
 
 @admin.register(CustomUser)
 @admin.register(Phone)
-@admin.register(Role)
 @admin.register(VerificationCode)
 @admin.register(Logger)
 class UserAdmin(admin.ModelAdmin):

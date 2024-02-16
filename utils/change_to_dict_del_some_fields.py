@@ -1,18 +1,23 @@
 def change_to_dict_del_some_fields(value: str):
-    pairs = value.split('&')
+    try:
+        print('Passou aqui')
+        pairs = value.split('&')
 
-    data = {}
-    for pair in pairs:
-        key, value = pair.split('=')
-        data[key] = value
+        data = {}
+        for pair in pairs:
+            key, value = pair.split('=')
+            data[key] = value
+        
+        if '_save' in data:
+            del data['_save']
+        
+        if 'post' in data:
+            del data['post']
+
+        if 'csrfmiddlewaretoken' in data:
+            del data['csrfmiddlewaretoken']
+
+        return data
+    except Exception as e:
+        return None
     
-    if '_save' in data:
-        del data['_save']
-    
-    if 'post' in data:
-        del data['post']
-
-    if 'csrfmiddlewaretoken' in data:
-        del data['csrfmiddlewaretoken']
-
-    return data

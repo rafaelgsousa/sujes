@@ -9,7 +9,6 @@ from rest_framework.exceptions import PermissionDenied
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
-        print('Passou aqui')
         if not email:
             raise ValueError('The email field is mandatory')
         email = self.normalize_email(email)     
@@ -49,7 +48,6 @@ class CustomUser(AbstractUser):
         user = CustomUser.objects.filter(pk=self.pk).first()
         if not user:
             self.username = self.email
-            self.password = make_password(self.password)
         if user and not (user.password != self.password): # "To prevent the super admin from changing the password"
             self.password = user.password
         return super().save(*args, **kwargs)
@@ -66,12 +64,6 @@ class Phone(models.Model):
 
     def __str__(self):
         return f'{self.name} - {self.number}'
-
-class Role(models.Model):
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name  
   
 
 class VerificationCode(models.Model):

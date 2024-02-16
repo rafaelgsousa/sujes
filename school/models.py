@@ -5,7 +5,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
 
-from persons.models import CustomUser, Role
+from persons.models import CustomUser
 
 
 class School(models.Model):
@@ -35,7 +35,6 @@ class Employee(models.Model):
     cpf = models.CharField(max_length=12)
     date_of_birth = models.DateTimeField()
     address = models.CharField(max_length=255)
-    role = models.ManyToManyField(Role)
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
 
     def __str__(self):
