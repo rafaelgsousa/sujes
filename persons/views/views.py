@@ -90,7 +90,6 @@ class CustomUserView(ModelViewSet):
         )
     
 
-
 class GroupView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated , DjangoModelPermissions]
@@ -98,23 +97,34 @@ class GroupView(ModelViewSet):
     pagination_class = ListPagination
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
     queryset = Group.objects.all()
+    
+    def create(self, request, *args, **kwargs):
+        body = request.data
 
-    def get_permissions(self):
-        if self.action in ['listpermissions']:
-            return []
-        else:
-            return [permission() for permission in self.permission_classes]
-
-    @action(detail=False, methods=['get'], url_path='listpermissions')
-    def listpermissions(self, request, *args, **kwargs):
         permissions = Permission.objects.all()
-        serializer = PermissionSerializer(permissions, many=True)
-        return Response(
-            {
-                'permissions': serializer.data
-            },
-            status=status.HTTP_200_OK
-        )
+
+        list_permissions = []
+
+        for modeltype in body.get('permissions', []):
+            for permissiontype in modeltype.get('permissions', []):
+                permission_codename = f'{permissiontype}_{modeltype['name']}'
+                matching_permission = next((permission for permission in permissions if permission.codename == permission_codename), None)
+                if matching_permission:
+                    list_permissions.append(matching_permission.id)
+
+        group_data = {
+            'name': body.get('name'),
+            'permissions': list_permissions
+        }
+
+        serializer = GroupSerializer(data=group_data)
+        
+        serializer.is_valid(raise_exception=True)
+
+        serializer.save()
+
+        return Response({'group': serializer.data}, status=status.HTTP_201_CREATED)
+
 
 
 class PhoneView(ModelViewSet):
@@ -124,6 +134,7 @@ class PhoneView(ModelViewSet):
     pagination_class = ListPagination
     http_method_names = ['get', 'options', 'head', 'patch', 'post', 'delete']
     queryset = Phone.objects.all()
+
 
 class LoggerView(ModelViewSet):
     authentication_classes = [JWTAuthentication]
