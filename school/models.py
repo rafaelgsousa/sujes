@@ -94,7 +94,7 @@ class TestScore(models.Model):
     grade = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)], default=5)
     month = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(12)], default=datetime.now().month)
     year = models.IntegerField(default=datetime.now().year)
-    type = models.CharField(choices=TypeTestScore.choices, default=TypeTestScore.MONTHLY)
+    type = models.CharField(max_length=25,choices=TypeTestScore.choices, default=TypeTestScore.MONTHLY)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     school_subject = models.ForeignKey(SchoolSubject, on_delete=models.CASCADE)
 
