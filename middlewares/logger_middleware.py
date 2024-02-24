@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.urls import resolve
 from rest_framework.response import Response
 
-from persons.models import CustomUser, Logger
+from people.models import CustomUser, Logger
 from utils import change_to_dict_del_some_fields, get_value_for_key
 
 logger = logging.getLogger(__name__)

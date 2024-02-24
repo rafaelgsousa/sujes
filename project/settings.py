@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-gla3j0754ag2!*b5t%(r+eohk-^b8a@^#wwyl0hi4n0vrmc8ql'
 
-AUTH_USER_MODEL = 'persons.CustomUser'
+AUTH_USER_MODEL = 'people.CustomUser'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
-    'persons',
+    'people',
     'school',
     'django_extensions',
 ]
