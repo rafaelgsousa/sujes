@@ -79,15 +79,20 @@ class CustomUserView(ModelViewSet):
 
     @action(detail=False, methods=['post'], url_path='logout')
     def logout(self, request, *args, **kwargs):
-        user = get_object_or_404(CustomUser, pk=request.user.id)
-
-        return Response(
-            {
-                'user': user.email,
-                'message': 'logout'
-            },
-            status=status.HTTP_200_OK
-        )
+        try:
+            user = get_object_or_404(CustomUser, pk=request.user.id)
+            refresh_token = request.data['refresh_token']
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response(
+                {
+                    'user': user.email,
+                    'message': 'logout'
+                },
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
     
 
 class GroupView(ModelViewSet):
