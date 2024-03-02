@@ -81,9 +81,6 @@ class CustomUserView(ModelViewSet):
     def logout(self, request, *args, **kwargs):
         try:
             user = get_object_or_404(CustomUser, pk=request.user.id)
-            refresh_token = request.data['refresh_token']
-            token = RefreshToken(refresh_token)
-            token.blacklist()
             return Response(
                 {
                     'user': user.email,

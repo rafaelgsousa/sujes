@@ -34,6 +34,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(max_length=50, unique=True)
     picture = models.ImageField(upload_to='pictures/%Y/%m/%d', blank=True)
     is_active = models.BooleanField(default=True)
+    logged = models.BooleanField(default=False)
     login_erro = models.IntegerField(choices=LoginError.choices, default=LoginError.ZERO)
     update_at = models.DateTimeField(auto_now=True)
 
